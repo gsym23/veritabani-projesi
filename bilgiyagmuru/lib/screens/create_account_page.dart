@@ -19,12 +19,12 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
   late final TextEditingController mailController;
   late final TextEditingController passwordController;
 
-  late final GlobalKey<FormState> fornKey;
+  late final GlobalKey<FormState> formKey;
 
   @override
   void initState() {
     super.initState();
-    fornKey = GlobalKey<FormState>();
+    formKey = GlobalKey<FormState>();
     nameController = TextEditingController();
     surnameController = TextEditingController();
     mailController = TextEditingController();
@@ -79,7 +79,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Form(
-                    key: fornKey,
+                    key: formKey,
                     child: Column(
                       children: [
                         CreateAccountPageTextFormField(
@@ -151,5 +151,9 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
             TextStyle(color: color, fontSize: 21, fontWeight: FontWeight.bold),
       );
 
-  void createAccount() {}
+  void createAccount() {
+    if(formKey.currentState!.validate()){
+      
+    }
+  }
 }

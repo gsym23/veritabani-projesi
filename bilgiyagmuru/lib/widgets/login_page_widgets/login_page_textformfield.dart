@@ -12,7 +12,7 @@ class LoginPageTextFormField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       obscureText: isPassword,
-      decoration: customInputDecoration(isPassword ? "Şifre" : "Kullanıcı Adı"),
+      decoration: customInputDecoration(isPassword ? "Şifre" : "E-mail"),
       style: const TextStyle(fontSize: 19),
     );
   }
