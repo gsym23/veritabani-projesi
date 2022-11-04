@@ -11,6 +11,7 @@ class LoginPageTextFormField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
+      obscureText: isPassword,
       decoration: customInputDecoration(isPassword ? "Şifre" : "Kullanıcı Adı"),
       style: const TextStyle(fontSize: 19),
     );

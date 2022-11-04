@@ -10,7 +10,7 @@ class FirebaseDbService implements DbService {
   }
 
   @override
-  Future<bool> deleteUser() {
+  Future<bool> deleteUser(String userId) {
     // TODO: implement deleteUser
     throw UnimplementedError();
   }
@@ -22,7 +22,7 @@ class FirebaseDbService implements DbService {
   }
 
   @override
-  Future<bool> updateUser() {
+  Future<bool> updateUser(AppUser user) {
     // TODO: implement updateUser
     throw UnimplementedError();
   }
