@@ -6,8 +6,6 @@ import 'package:bilgiyagmuru/widgets/create_account_page_widgets/create_account_
 import 'package:bilgiyagmuru/widgets/create_account_page_widgets/register_button.dart';
 import 'package:bilgiyagmuru/widgets/common_widgets/image_container.dart';
 
-
-
 class CreateAccountPage extends StatefulWidget {
   const CreateAccountPage({Key? key}) : super(key: key);
 
@@ -22,7 +20,6 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
   late final TextEditingController passwordController;
 
   late final GlobalKey<FormState> fornKey;
-
 
   @override
   void initState() {
@@ -57,16 +54,31 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                customSizedBox(constraints.maxHeight / 20),
-                titleText(),
-                customSizedBox(constraints.maxHeight / 15),
-                Form(
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              customSizedBox(constraints.maxHeight / 20),
+              Row(
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: const Icon(
+                        Icons.arrow_back_ios,
+                        color: Colors.white,
+                      )),
+                  const SizedBox(
+                    width: 35,
+                  ),
+                  titleText(),
+                ],
+              ),
+              customSizedBox(constraints.maxHeight / 15),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Form(
                     key: fornKey,
                     child: Column(
                       children: [
@@ -92,13 +104,13 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                         ),
                       ],
                     )),
-                RegisterButton(
-                  onClick: () {
-                    createAccount();
-                  },
-                ),
-              ],
-            ),
+              ),
+              RegisterButton(
+                onClick: () {
+                  createAccount();
+                },
+              ),
+            ],
           ),
           const Spacer(),
           ImageContainer(
