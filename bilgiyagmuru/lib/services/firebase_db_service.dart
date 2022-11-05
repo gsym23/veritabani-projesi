@@ -11,6 +11,7 @@ class FirebaseDbService implements DbService {
   @override
   Future<bool> createUserWithEmail(AppUser user) async {
     try {
+      EasyLoading.show();
       final credential =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: user.email,

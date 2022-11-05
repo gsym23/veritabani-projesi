@@ -25,6 +25,7 @@ class App extends StatelessWidget {
         theme: ThemeData(
           scaffoldBackgroundColor: CustomColors.scaffoldBackgroundColor,
         ),
+        builder: EasyLoading.init(),
         home: const LoginPage());
   }
   
