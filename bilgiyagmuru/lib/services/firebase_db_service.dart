@@ -3,6 +3,7 @@ import 'package:bilgiyagmuru/services/db_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class FirebaseDbService implements DbService {
   //email ve şifre ile yeni hesap oluşturma
@@ -19,15 +20,16 @@ class FirebaseDbService implements DbService {
       var newUser = AppUser(
           id: uid, name: user.name,surname: user.surname ,email: user.email, password: user.password);
       await registerUser(newUser);
+      EasyLoading.showSuccess("Kayıt başarılı !");
       return true;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        debugPrint(e.toString());
+        EasyLoading.showError("Lütfen daha güçlü parola giriniz");
       } else if (e.code == 'email-already-in-use') {
-        debugPrint(e.toString());
+        EasyLoading.showError("Bu email zaten kullanımda");
       }
     } catch (e) {
-      debugPrint(e.toString());
+      EasyLoading.showError("Bir sorun oluştu. Lütfen bağlantınızı kontrol edin.");
     }
     return false;
   }

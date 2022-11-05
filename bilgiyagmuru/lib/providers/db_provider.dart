@@ -10,7 +10,7 @@ class DbNotifier extends StateNotifier<FirebaseDbService> {
   Future<bool> createUserWithEmail(AppUser user) async {
     var result = await dbService.createUserWithEmail(user);
     return result;
-  } 
+  }
 
   Future<bool> updateUser(AppUser user) async {
     bool result = await dbService.updateUser(user);
@@ -27,11 +27,11 @@ class DbNotifier extends StateNotifier<FirebaseDbService> {
     Map<String, dynamic> result = await dbService.getUser(userId);
 
     return AppUser(
-        id: result[0]["id"],
-        name: result[0]["name"],
-        surname: result[0]["surname"],
-        email: result[0]["email"],
-        password: result[0]["password"]);
+        id: result[0]["id"] as String,
+        name: result[0]["name"] as String,
+        surname: result[0]["surname"] as String,
+        email: result[0]["email"] as String,
+        password: result[0]["password"] as String);
   }
 }
 

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:bilgiyagmuru/firebase_options.dart';
 import 'package:bilgiyagmuru/utils/customColors.dart';
 import 'package:bilgiyagmuru/screens/login_page.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() async {
@@ -11,6 +12,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(const ProviderScope(child: App()));
+  configLoading();
 }
 
 class App extends StatelessWidget {
@@ -25,4 +27,20 @@ class App extends StatelessWidget {
         ),
         home: const LoginPage());
   }
+  
+}
+void configLoading() {
+  EasyLoading.instance
+    ..displayDuration = const Duration(milliseconds: 2000)
+    ..indicatorType = EasyLoadingIndicatorType.fadingCircle
+    ..loadingStyle = EasyLoadingStyle.dark
+    ..indicatorSize = 45.0
+    ..radius = 10.0
+    ..progressColor = Colors.yellow
+    ..backgroundColor = Colors.green
+    ..indicatorColor = Colors.yellow
+    ..textColor = Colors.yellow
+    ..maskColor = Colors.blue.withOpacity(0.5)
+    ..userInteractions = true
+    ..dismissOnTap = false;
 }
