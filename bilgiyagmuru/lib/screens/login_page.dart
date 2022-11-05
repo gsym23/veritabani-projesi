@@ -1,3 +1,4 @@
+import 'package:bilgiyagmuru/providers/db_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:bilgiyagmuru/const/login_page_constant_variable.dart';
 import 'package:bilgiyagmuru/screens/create_account_page.dart';
@@ -6,29 +7,30 @@ import 'package:bilgiyagmuru/widgets/login_page_widgets/login_page_button.dart';
 import 'package:bilgiyagmuru/widgets/login_page_widgets/login_page_textformfield.dart';
 import 'package:bilgiyagmuru/widgets/login_page_widgets/sign_in_button.dart';
 import 'package:bilgiyagmuru/widgets/common_widgets/image_container.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  ConsumerState<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
-  late final TextEditingController usernameController;
+class _LoginPageState extends ConsumerState<LoginPage> {
+  late final TextEditingController mailController;
   late final TextEditingController passwordController;
 
   @override
   void initState() {
     super.initState();
-    usernameController = TextEditingController();
+    mailController = TextEditingController();
     passwordController = TextEditingController();
   }
 
   @override
   void dispose() {
     super.dispose();
-    usernameController.dispose();
+    mailController.dispose();
     passwordController.dispose();
   }
 
@@ -47,7 +49,10 @@ class _LoginPageState extends State<LoginPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ImageContainer(
-                  imagePath: topImage, height: constraints.maxHeight, isTop: true,),
+                imagePath: topImage,
+                height: constraints.maxHeight,
+                isTop: true,
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
@@ -57,7 +62,7 @@ class _LoginPageState extends State<LoginPage> {
                     customSizedBox(),
                     LoginPageTextFormField(
                       isPassword: false,
-                      controller: usernameController,
+                      controller: mailController,
                     ),
                     customSizedBox(),
                     LoginPageTextFormField(
@@ -66,7 +71,11 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     customSizedBox(),
                     customSizedBox(),
-                    const SignInButton(),
+                    SignInButton(
+                      onClick: () {
+                        signIn();
+                      },
+                    ),
                     customSizedBox(),
                     LoginPageButton(
                       title: createAccountButtonTittle,
@@ -110,5 +119,10 @@ class _LoginPageState extends State<LoginPage> {
 
   goForgotPasswordPage() {
     //şifremi unuttum sayfasına yönlendirilecek
+  }
+
+  void signIn() async {
+    await ref.read(firebaseProvider).loginUserWithEmail(
+        mailController.text.trim(), passwordController.text.trim());
   }
 }

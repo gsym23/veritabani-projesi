@@ -3,13 +3,17 @@ import 'package:bilgiyagmuru/utils/customColors.dart';
 import 'package:bilgiyagmuru/utils/customTextStyle.dart';
 
 class SignInButton extends StatelessWidget {
-  const SignInButton({super.key});
+  const SignInButton({super.key, required this.onClick});
+
+  final Function onClick;
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: TextButton(
-        onPressed: () {},
+        onPressed: () {
+          onClick.call();
+        },
         child: Container(
           height: 60,
           width: 240,

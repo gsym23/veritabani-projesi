@@ -25,6 +25,7 @@ class AppUser {
       "name": name,
       "surname": surname,
       "email": email,
+      "password": password
     } as Map<String, dynamic>;
   }
 

@@ -15,11 +15,15 @@ class FirebaseDbService implements DbService {
       final credential =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: user.email,
-        password: user.email,
+        password: user.password,
       );
       var uid = credential.user!.uid;
       var newUser = AppUser(
-          id: uid, name: user.name,surname: user.surname ,email: user.email, password: user.password);
+          id: uid,
+          name: user.name,
+          surname: user.surname,
+          email: user.email,
+          password: user.password);
       await registerUser(newUser);
       EasyLoading.showSuccess("Kayıt başarılı !");
       return true;
@@ -30,9 +34,37 @@ class FirebaseDbService implements DbService {
         EasyLoading.showError("Bu email zaten kullanımda");
       }
     } catch (e) {
-      EasyLoading.showError("Bir sorun oluştu. Lütfen bağlantınızı kontrol edin.");
+      EasyLoading.showError(
+          "Bir sorun oluştu. Lütfen bağlantınızı kontrol edin.");
     }
     return false;
+  }
+
+  Future<void> loginUserWithEmail(String email, String password) async {
+    try {
+      EasyLoading.show();
+      UserCredential credential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+
+      var uid = credential.user!.uid;
+
+      FirebaseFirestore.instance
+          .collection("users")
+          .doc(uid)
+          .get()
+          .then((value) {
+        EasyLoading.showSuccess("Giriş başarılı");
+        debugPrint(value.data().toString());
+      });
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        EasyLoading.showError("Kullanıcı Bulunamadı");
+      } else if (e.code == 'invalid-email') {
+        EasyLoading.showError("Geçersiz e-mail");
+      } else if (e.code == "wrong-password") {
+        EasyLoading.showError("Kullanıcı adı veya parola yanlış");
+      }
+    }
   }
 
   @override
@@ -41,9 +73,13 @@ class FirebaseDbService implements DbService {
   }
 
   Future<void> registerUser(AppUser user) async {
-    CollectionReference users = FirebaseFirestore.instance.collection('users');
-    debugPrint(user.toString());
-    await users.doc(user.id).set(user.toMap());
+    try {
+      CollectionReference users =
+          FirebaseFirestore.instance.collection('users');
+      await users.doc(user.id).set(user.toMap());
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 
   @override
