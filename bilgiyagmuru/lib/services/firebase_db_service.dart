@@ -6,16 +6,20 @@ import 'package:flutter/material.dart';
 
 class FirebaseDbService implements DbService {
   //email ve şifre ile yeni hesap oluşturma
+
   @override
-  Future<UserCredential?> createUserWithEmail(AppUser user) async {
+  Future<bool> createUserWithEmail(AppUser user) async {
     try {
       final credential =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: user.email,
         password: user.email,
       );
-      
-      return credential;
+      var uid = credential.user!.uid;
+      var newUser = AppUser(
+          id: uid, name: user.name,surname: user.surname ,email: user.email, password: user.password);
+      await registerUser(newUser);
+      return true;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         debugPrint(e.toString());
@@ -25,7 +29,7 @@ class FirebaseDbService implements DbService {
     } catch (e) {
       debugPrint(e.toString());
     }
-    return null;
+    return false;
   }
 
   @override
@@ -33,10 +37,10 @@ class FirebaseDbService implements DbService {
     throw UnimplementedError();
   }
 
-  Future<void> registerUser(AppUser user) async{
+  Future<void> registerUser(AppUser user) async {
     CollectionReference users = FirebaseFirestore.instance.collection('users');
-    await users.add(user.toMap());
-
+    debugPrint(user.toString());
+    await users.doc(user.id).set(user.toMap());
   }
 
   @override

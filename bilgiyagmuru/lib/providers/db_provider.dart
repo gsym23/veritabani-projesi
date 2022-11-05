@@ -1,6 +1,5 @@
 import 'package:bilgiyagmuru/models/user.dart';
 import 'package:bilgiyagmuru/services/firebase_db_service.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class DbNotifier extends StateNotifier<FirebaseDbService> {
@@ -9,21 +8,9 @@ class DbNotifier extends StateNotifier<FirebaseDbService> {
   final FirebaseDbService dbService = FirebaseDbService();
 
   Future<bool> createUserWithEmail(AppUser user) async {
-    var credential = await dbService.createUserWithEmail(user);
-
-    if (credential != null) {
-      await registerUser(credential, user);
-    } else {}
-    return true;
-  }
-
-  Future<void> registerUser(UserCredential credential, AppUser user) async {
-    await dbService.registerUser(AppUser(
-        id: credential.user!.uid,
-        name: user.name,
-        email: user.email,
-        password: user.password));
-  }
+    var result = await dbService.createUserWithEmail(user);
+    return result;
+  } 
 
   Future<bool> updateUser(AppUser user) async {
     bool result = await dbService.updateUser(user);
@@ -40,10 +27,11 @@ class DbNotifier extends StateNotifier<FirebaseDbService> {
     Map<String, dynamic> result = await dbService.getUser(userId);
 
     return AppUser(
-        id: result["id"],
-        name: result["name"],
-        email: result["email"],
-        password: result["password"]);
+        id: result[0]["id"],
+        name: result[0]["name"],
+        surname: result[0]["surname"],
+        email: result[0]["email"],
+        password: result[0]["password"]);
   }
 }
 

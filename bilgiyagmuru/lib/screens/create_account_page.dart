@@ -154,14 +154,15 @@ class _CreateAccountPageState extends ConsumerState<CreateAccountPage> {
             TextStyle(color: color, fontSize: 21, fontWeight: FontWeight.bold),
       );
 
-  void createAccount() {
+  void createAccount() async{
     if (formKey.currentState!.validate()) {
       var user = AppUser(
           id: "",
           name: nameController.text,
+          surname: surnameController.text,
           email: mailController.text,
           password: passwordController.text);
-      ref.read(firebaseProvider).createUserWithEmail(user);
+      await ref.read(firebaseProvider).createUserWithEmail(user);
     }
   }
 }
