@@ -1,3 +1,5 @@
+import 'package:bilgiyagmuru/models/user.dart';
+import 'package:bilgiyagmuru/providers/db_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:bilgiyagmuru/const/create_account_page_constant_variable.dart';
 import 'package:bilgiyagmuru/const/login_page_constant_variable.dart';
@@ -5,15 +7,16 @@ import 'package:bilgiyagmuru/utils/customTextStyle.dart';
 import 'package:bilgiyagmuru/widgets/create_account_page_widgets/create_account_textformfield.dart';
 import 'package:bilgiyagmuru/widgets/create_account_page_widgets/register_button.dart';
 import 'package:bilgiyagmuru/widgets/common_widgets/image_container.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CreateAccountPage extends StatefulWidget {
+class CreateAccountPage extends ConsumerStatefulWidget {
   const CreateAccountPage({Key? key}) : super(key: key);
 
   @override
-  State<CreateAccountPage> createState() => _CreateAccountPageState();
+  ConsumerState<CreateAccountPage> createState() => _CreateAccountPageState();
 }
 
-class _CreateAccountPageState extends State<CreateAccountPage> {
+class _CreateAccountPageState extends ConsumerState<CreateAccountPage> {
   late final TextEditingController nameController;
   late final TextEditingController surnameController;
   late final TextEditingController mailController;
@@ -152,8 +155,13 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
       );
 
   void createAccount() {
-    if(formKey.currentState!.validate()){
-      
+    if (formKey.currentState!.validate()) {
+      var user = AppUser(
+          id: "",
+          name: nameController.text,
+          email: mailController.text,
+          password: passwordController.text);
+      ref.read(firebaseProvider).createUserWithEmail(user);
     }
   }
 }
