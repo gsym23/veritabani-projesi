@@ -120,6 +120,7 @@ class _CreateAccountPageState extends ConsumerState<CreateAccountPage> {
           ImageContainer(
             height: constraints.maxHeight,
             imagePath: topImage1,
+            isTop: false,
           ),
         ],
       );
@@ -133,26 +134,9 @@ class _CreateAccountPageState extends ConsumerState<CreateAccountPage> {
     );
   }
 
-  Container topImageContainer(double height, String topImage) {
-    return Container(
-      height: height * .40,
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          fit: BoxFit.cover,
-          image: AssetImage(topImage),
-        ),
-      ),
-    );
-  }
 
   Widget customSizedBox(double height) => SizedBox(
         height: height,
-      );
-
-  Widget customText(String text, Color color) => Text(
-        text,
-        style:
-            TextStyle(color: color, fontSize: 21, fontWeight: FontWeight.bold),
       );
 
   void createAccount() async{

@@ -47,7 +47,7 @@ class _LoginPageState extends State<LoginPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ImageContainer(
-                  imagePath: topImage, height: constraints.maxHeight),
+                  imagePath: topImage, height: constraints.maxHeight, isTop: true,),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
