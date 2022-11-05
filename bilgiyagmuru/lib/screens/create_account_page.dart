@@ -7,7 +7,6 @@ import 'package:bilgiyagmuru/utils/customTextStyle.dart';
 import 'package:bilgiyagmuru/widgets/create_account_page_widgets/create_account_textformfield.dart';
 import 'package:bilgiyagmuru/widgets/create_account_page_widgets/register_button.dart';
 import 'package:bilgiyagmuru/widgets/common_widgets/image_container.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CreateAccountPage extends ConsumerStatefulWidget {
