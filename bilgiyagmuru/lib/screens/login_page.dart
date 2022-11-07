@@ -20,11 +20,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   late final TextEditingController mailController;
   late final TextEditingController passwordController;
 
+  late final GlobalKey<FormState> globalKey;
+
   @override
   void initState() {
     super.initState();
     mailController = TextEditingController();
     passwordController = TextEditingController();
+    globalKey = GlobalKey<FormState>();
   }
 
   @override
@@ -59,38 +62,46 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     titleText(),
-                    customSizedBox(),
-                    LoginPageTextFormField(
-                      isPassword: false,
-                      controller: mailController,
+                    SizedBox(
+                      height: constraints.maxHeight / 10,
                     ),
-                    customSizedBox(),
-                    LoginPageTextFormField(
-                      isPassword: true,
-                      controller: passwordController,
+                    Form(
+                      key: globalKey,
+                      child: Column(
+                        children: [
+                          LoginPageTextFormField(
+                            isPassword: false,
+                            controller: mailController,
+                          ),
+                          SizedBox(
+                            height: constraints.maxHeight / 20,
+                          ),
+                          LoginPageTextFormField(
+                            isPassword: true,
+                            controller: passwordController,
+                          ),
+                        ],
+                      ),
                     ),
-                    customSizedBox(),
-                    customSizedBox(),
+                    SizedBox(height: constraints.maxHeight / 15,),
                     SignInButton(
                       onClick: () {
                         signIn();
                       },
                     ),
-                    customSizedBox(),
+                    SizedBox(height: constraints.maxHeight / 20,),
                     LoginPageButton(
                       title: createAccountButtonTittle,
                       onClick: () {
                         goCreateAccountPage();
                       },
                     ),
-                    customSizedBox(),
                     LoginPageButton(
                       title: forgotPasswordButtonTittle,
                       onClick: () {
                         goForgotPasswordPage();
                       },
                     ),
-                    customSizedBox(),
                   ],
                 ),
               )
@@ -108,10 +119,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     );
   }
 
-  Widget customSizedBox() => const SizedBox(
-        height: 20,
-      );
-
   goCreateAccountPage() {
     Navigator.of(context).push(
         MaterialPageRoute(builder: (context) => const CreateAccountPage()));
@@ -122,7 +129,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   }
 
   void signIn() async {
-    await ref.read(firebaseProvider).loginUserWithEmail(
-        mailController.text.trim(), passwordController.text.trim());
+    if (globalKey.currentState!.validate()) {
+      await ref.read(firebaseProvider).loginUserWithEmail(
+          mailController.text.trim(), passwordController.text.trim());
+    }
   }
 }
