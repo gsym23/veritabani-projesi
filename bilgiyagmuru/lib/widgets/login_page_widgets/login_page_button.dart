@@ -16,7 +16,7 @@ class LoginPageButton extends StatelessWidget {
           onClick.call();
         },
         child: Text(title,
-            style: const TextStyle(fontSize: 19, color: Color(0xFFffff00))),
+            style: const TextStyle(fontSize: 19, color: Color(0xFFffff00), fontFamily: "YanoneKaffeesatz", fontWeight: FontWeight.w200)),
       ),
     );
   }

@@ -13,6 +13,7 @@ class FirebaseDbService implements DbService {
     try {
       EasyLoading.show();
       final credential =
+      
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: user.email,
         password: user.password,
@@ -32,6 +33,8 @@ class FirebaseDbService implements DbService {
         EasyLoading.showError("Lütfen daha güçlü parola giriniz");
       } else if (e.code == 'email-already-in-use') {
         EasyLoading.showError("Bu email zaten kullanımda");
+      } else if (e.code == "invalid-email") {
+        EasyLoading.showError("Geçersiz email");
       }
     } catch (e) {
       EasyLoading.showError(

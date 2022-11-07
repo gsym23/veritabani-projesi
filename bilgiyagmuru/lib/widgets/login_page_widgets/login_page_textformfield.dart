@@ -1,8 +1,10 @@
+import 'package:bilgiyagmuru/const/common_constant_variable.dart';
 import 'package:flutter/material.dart';
 import 'package:bilgiyagmuru/utils/custom_input_decoration.dart';
 
 class LoginPageTextFormField extends StatelessWidget {
-  const LoginPageTextFormField({super.key, required this.controller,required this.isPassword});
+  const LoginPageTextFormField(
+      {super.key, required this.controller, required this.isPassword});
 
   final bool isPassword;
   final TextEditingController controller;
@@ -14,13 +16,15 @@ class LoginPageTextFormField extends StatelessWidget {
       obscureText: isPassword,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: (value) {
-        if(value != ""){
+        if (value != "") {
           return null;
         }
-        return isPassword ? "Lütfen şifrenizi giriniz" : "Lütfen E-mailinizi giriniz";
+        return isPassword
+            ? "Lütfen şifrenizi giriniz"
+            : "Lütfen E-mailinizi giriniz";
       },
       decoration: customInputDecoration(isPassword ? "Şifre" : "E-mail"),
-      style: const TextStyle(fontSize: 19),
+      style: textFormFieldTextStyle,
     );
   }
 }
