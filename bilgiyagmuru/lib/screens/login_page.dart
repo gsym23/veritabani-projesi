@@ -1,13 +1,15 @@
-import 'package:bilgiyagmuru/providers/db_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:bilgiyagmuru/const/login_page_constant_variable.dart';
-import 'package:bilgiyagmuru/screens/create_account_page.dart';
-import 'package:bilgiyagmuru/utils/customTextStyle.dart';
-import 'package:bilgiyagmuru/widgets/login_page_widgets/login_page_button.dart';
-import 'package:bilgiyagmuru/widgets/login_page_widgets/login_page_textformfield.dart';
-import 'package:bilgiyagmuru/widgets/login_page_widgets/sign_in_button.dart';
-import 'package:bilgiyagmuru/widgets/common_widgets/image_container.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../const/login_page_constant_variable.dart';
+import '../providers/db_provider.dart';
+import '../utils/customTextStyle.dart';
+import '../widgets/common_widgets/image_container.dart';
+import '../widgets/login_page_widgets/login_page_button.dart';
+import '../widgets/login_page_widgets/login_page_textformfield.dart';
+import '../widgets/login_page_widgets/sign_in_button.dart';
+import 'create_account_page.dart';
+import 'home_page.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -83,13 +85,17 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         ],
                       ),
                     ),
-                    SizedBox(height: constraints.maxHeight / 15,),
+                    SizedBox(
+                      height: constraints.maxHeight / 15,
+                    ),
                     SignInButton(
                       onClick: () {
                         signIn();
                       },
                     ),
-                    SizedBox(height: constraints.maxHeight / 20,),
+                    SizedBox(
+                      height: constraints.maxHeight / 20,
+                    ),
                     LoginPageButton(
                       title: createAccountButtonTittle,
                       onClick: () {
@@ -130,8 +136,15 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   void signIn() async {
     if (globalKey.currentState!.validate()) {
-      await ref.read(firebaseProvider).loginUserWithEmail(
+      bool result = await ref.read(firebaseProvider).loginUserWithEmail(
           mailController.text.trim(), passwordController.text.trim());
+
+      if (mounted) {
+        if (result) {
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => const HomePage()));
+        }
+      }
     }
   }
 }

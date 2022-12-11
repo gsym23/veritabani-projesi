@@ -1,9 +1,11 @@
-import 'package:bilgiyagmuru/models/user.dart';
-import 'package:bilgiyagmuru/services/db_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+
+import '../models/category.dart';
+import '../models/user.dart';
+import 'db_service.dart';
 
 class FirebaseDbService implements DbService {
   //email ve şifre ile yeni hesap oluşturma
@@ -13,7 +15,6 @@ class FirebaseDbService implements DbService {
     try {
       EasyLoading.show();
       final credential =
-      
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: user.email,
         password: user.password,
@@ -43,7 +44,8 @@ class FirebaseDbService implements DbService {
     return false;
   }
 
-  Future<void> loginUserWithEmail(String email, String password) async {
+  @override
+  Future<bool> loginUserWithEmail(String email, String password) async {
     try {
       EasyLoading.show();
       UserCredential credential = await FirebaseAuth.instance
@@ -59,6 +61,7 @@ class FirebaseDbService implements DbService {
         EasyLoading.showSuccess("Giriş başarılı");
         debugPrint(value.data().toString());
       });
+      return true;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         EasyLoading.showError("Kullanıcı Bulunamadı");
@@ -68,6 +71,7 @@ class FirebaseDbService implements DbService {
         EasyLoading.showError("Kullanıcı adı veya parola yanlış");
       }
     }
+    return false;
   }
 
   @override
@@ -92,6 +96,10 @@ class FirebaseDbService implements DbService {
 
   @override
   Future<bool> updateUser(AppUser user) {
+    throw UnimplementedError();
+  }
+
+  Future<Map<String, dynamic>> getInterestingInformation(Category category) {
     throw UnimplementedError();
   }
 }

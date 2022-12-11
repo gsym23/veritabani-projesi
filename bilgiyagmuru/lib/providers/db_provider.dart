@@ -1,6 +1,8 @@
-import 'package:bilgiyagmuru/models/user.dart';
-import 'package:bilgiyagmuru/services/firebase_db_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../models/category.dart';
+import '../models/user.dart';
+import '../services/firebase_db_service.dart';
 
 class DbNotifier extends StateNotifier<FirebaseDbService> {
   DbNotifier() : super(FirebaseDbService());
@@ -22,6 +24,11 @@ class DbNotifier extends StateNotifier<FirebaseDbService> {
     return result;
   }
 
+  Future<bool> loginUserWithEmail(String email, String password) async {
+    bool result = await dbService.loginUserWithEmail(email, password);
+    return result;
+  }
+
   Future<AppUser> getUser(String userId) async {
     //Gelen veri AppUser nesnesine dönüştürülüp return edilecek
     Map<String, dynamic> result = await dbService.getUser(userId);
@@ -32,6 +39,12 @@ class DbNotifier extends StateNotifier<FirebaseDbService> {
         surname: result[0]["surname"] as String,
         email: result[0]["email"] as String,
         password: result[0]["password"] as String);
+  }
+
+  Future<Map<String, dynamic>> getInterestingInformation(Category category) async {
+    var interestingInfo = await dbService.getInterestingInformation(category);
+    return interestingInfo;
+
   }
 }
 

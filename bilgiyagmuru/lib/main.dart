@@ -1,10 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:bilgiyagmuru/firebase_options.dart';
-import 'package:bilgiyagmuru/utils/customColors.dart';
-import 'package:bilgiyagmuru/screens/login_page.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'firebase_options.dart';
+import 'screens/login_page.dart';
+import 'utils/customColors.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,8 +29,8 @@ class App extends StatelessWidget {
         builder: EasyLoading.init(),
         home: const LoginPage());
   }
-  
 }
+
 void configLoading() {
   EasyLoading.instance
     ..displayDuration = const Duration(milliseconds: 2000)
