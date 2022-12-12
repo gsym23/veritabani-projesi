@@ -1,13 +1,15 @@
-import 'package:bilgiyagmuru/models/user.dart';
-import 'package:bilgiyagmuru/providers/db_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:bilgiyagmuru/const/create_account_page_constant_variable.dart';
-import 'package:bilgiyagmuru/const/login_page_constant_variable.dart';
-import 'package:bilgiyagmuru/utils/customTextStyle.dart';
-import 'package:bilgiyagmuru/widgets/create_account_page_widgets/create_account_textformfield.dart';
-import 'package:bilgiyagmuru/widgets/create_account_page_widgets/register_button.dart';
-import 'package:bilgiyagmuru/widgets/common_widgets/image_container.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../const/create_account_page_constant_variable.dart';
+import '../const/login_page_constant_variable.dart';
+import '../models/user.dart';
+import '../providers/db_provider.dart';
+import '../utils/customTextStyle.dart';
+import '../widgets/common_widgets/image_container.dart';
+import '../widgets/create_account_page_widgets/create_account_textformfield.dart';
+import '../widgets/create_account_page_widgets/register_button.dart';
+import 'login_page.dart';
 
 class CreateAccountPage extends ConsumerStatefulWidget {
   const CreateAccountPage({Key? key}) : super(key: key);
@@ -134,12 +136,11 @@ class _CreateAccountPageState extends ConsumerState<CreateAccountPage> {
     );
   }
 
-
   Widget customSizedBox(double height) => SizedBox(
         height: height,
       );
 
-  void createAccount() async{
+  void createAccount() async {
     if (formKey.currentState!.validate()) {
       var user = AppUser(
           id: "",
@@ -147,7 +148,12 @@ class _CreateAccountPageState extends ConsumerState<CreateAccountPage> {
           surname: surnameController.text,
           email: mailController.text,
           password: passwordController.text);
-      await ref.read(firebaseProvider).createUserWithEmail(user);
+      bool result = await ref.read(firebaseProvider).createUserWithEmail(user);
+
+      if (result) {
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => const LoginPage()));
+      }
     }
   }
 }

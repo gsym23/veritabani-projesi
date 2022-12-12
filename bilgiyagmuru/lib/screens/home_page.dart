@@ -3,12 +3,14 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 import '../const/home_page_constant.dart';
 import '../models/category.dart';
+import '../models/user.dart';
 import '../widgets/home_page_widgets/category_widget.dart';
+import 'settings_page.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({super.key, required this.user});
 
-  // final AppUser user;
+  final AppUser user;
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -38,7 +40,10 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: const Color.fromRGBO(164, 140, 178, 1),
           actions: [
             IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => SettingsPage(user: widget.user)));
+                },
                 icon: const Icon(
                   Icons.settings,
                   color: Colors.black,

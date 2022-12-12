@@ -3,20 +3,25 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../const/home_page_constant.dart';
 import '../../models/category.dart';
+import '../../providers/db_provider.dart';
+import '../../screens/information_page.dart';
 
 class CategoryWidget extends ConsumerWidget {
   const CategoryWidget({super.key, required this.category});
 
   final Category category;
 
-  
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
-      onTap: () async{
-
-        // await ref.read(firebaseProvider).getInterestingInformation(category);
-
+      onTap: () async {
+        var information = await ref
+            .read(firebaseProvider)
+            .getInterestingInformation(category);
+            
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => InformationPage(
+                category: category, information: information)));
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -24,7 +29,7 @@ class CategoryWidget extends ConsumerWidget {
           decoration: BoxDecoration(
               color: const Color.fromRGBO(234, 199, 255, 1),
               borderRadius: BorderRadius.circular(20)),
-          child:  Center(
+          child: Center(
             child: Text(
               category.categoryName(),
               style: categoryNameTextStyle,

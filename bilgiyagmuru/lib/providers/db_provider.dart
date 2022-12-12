@@ -24,8 +24,8 @@ class DbNotifier extends StateNotifier<FirebaseDbService> {
     return result;
   }
 
-  Future<bool> loginUserWithEmail(String email, String password) async {
-    bool result = await dbService.loginUserWithEmail(email, password);
+  Future<AppUser?> loginUserWithEmail(String email, String password) async {
+    var result = await dbService.loginUserWithEmail(email, password);
     return result;
   }
 
@@ -41,11 +41,18 @@ class DbNotifier extends StateNotifier<FirebaseDbService> {
         password: result[0]["password"] as String);
   }
 
-  Future<Map<String, dynamic>> getInterestingInformation(Category category) async {
+  Future<String> getInterestingInformation(Category category) async {
     var interestingInfo = await dbService.getInterestingInformation(category);
     return interestingInfo;
-
   }
+
+  Future<void> signOut() async {
+    await dbService.signOut();
+  }
+
+  // void setup(){
+  //   dbService.setup();
+  // }
 }
 
 final firebaseProvider =

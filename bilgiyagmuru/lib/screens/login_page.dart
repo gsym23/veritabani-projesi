@@ -136,13 +136,15 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   void signIn() async {
     if (globalKey.currentState!.validate()) {
-      bool result = await ref.read(firebaseProvider).loginUserWithEmail(
+      var result = await ref.read(firebaseProvider).loginUserWithEmail(
           mailController.text.trim(), passwordController.text.trim());
 
       if (mounted) {
-        if (result) {
-          Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => const HomePage()));
+        if (result != null) {
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+              builder: (context) => HomePage(
+                    user: result,
+                  )));
         }
       }
     }

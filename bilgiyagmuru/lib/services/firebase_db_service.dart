@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +11,26 @@ import 'db_service.dart';
 
 class FirebaseDbService implements DbService {
   //email ve şifre ile yeni hesap oluşturma
+
+  // void setup() async {
+  //   final String response =
+  //       await rootBundle.loadString('assets/json/interestingInformation.json');
+  //   final data = await json.decode(response);
+
+  //   for (int i = 0; i < 8; i++) {
+  //     for (int j = 0; j < data["$i"].length; j++) {
+  //       await FirebaseFirestore.instance
+  //           .collection("interestingInformations")
+  //           .doc("$i")
+  //           .collection("$i")
+  //           .doc("$j")
+  //           .set({"bilgi" : data["$i"]["$j"]});
+  //     }
+  //   }
+
+  //   // final doc =
+  //   //       await FirebaseFirestore.instance.collection("users").doc().set();
+  // }
 
   @override
   Future<bool> createUserWithEmail(AppUser user) async {
@@ -44,8 +66,18 @@ class FirebaseDbService implements DbService {
     return false;
   }
 
+  Future<void> signOut() async {
+
+    var currentUser = FirebaseAuth.instance.currentUser;
+    EasyLoading.show();
+    if(currentUser != null){
+      await FirebaseAuth.instance.signOut();
+      EasyLoading.dismiss();
+    }
+  }
+
   @override
-  Future<bool> loginUserWithEmail(String email, String password) async {
+  Future<AppUser?> loginUserWithEmail(String email, String password) async {
     try {
       EasyLoading.show();
       UserCredential credential = await FirebaseAuth.instance
@@ -53,15 +85,17 @@ class FirebaseDbService implements DbService {
 
       var uid = credential.user!.uid;
 
-      FirebaseFirestore.instance
-          .collection("users")
-          .doc(uid)
-          .get()
-          .then((value) {
-        EasyLoading.showSuccess("Giriş başarılı");
-        debugPrint(value.data().toString());
-      });
-      return true;
+      final doc =
+          await FirebaseFirestore.instance.collection("users").doc(uid).get();
+
+      await EasyLoading.showSuccess("Giriş başarılı");
+      final data = doc.data() as Map<String, dynamic>;
+      return AppUser(
+          id: data["id"],
+          name: data["name"],
+          surname: data["surname"],
+          email: email,
+          password: password);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         EasyLoading.showError("Kullanıcı Bulunamadı");
@@ -71,7 +105,7 @@ class FirebaseDbService implements DbService {
         EasyLoading.showError("Kullanıcı adı veya parola yanlış");
       }
     }
-    return false;
+    return null;
   }
 
   @override
@@ -99,7 +133,23 @@ class FirebaseDbService implements DbService {
     throw UnimplementedError();
   }
 
-  Future<Map<String, dynamic>> getInterestingInformation(Category category) {
-    throw UnimplementedError();
+  Future<String> getInterestingInformation(Category category) async {
+    try {
+      final informations = await FirebaseFirestore.instance
+          .collection('interestingInformations')
+          .doc("${category.categoryId}")
+          .collection("${category.categoryId}")
+          .doc("${Random().nextInt(6)}")
+          .get();
+
+      var result = informations.data() as Map<String, dynamic>;
+
+      String information = result["bilgi"];
+
+      return information;
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+    return "";
   }
 }
