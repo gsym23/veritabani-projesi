@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lottie/lottie.dart';
 
 import '../../const/home_page_constant.dart';
 import '../../models/category.dart';
@@ -29,11 +30,15 @@ class CategoryWidget extends ConsumerWidget {
           decoration: BoxDecoration(
               color: const Color.fromRGBO(234, 199, 255, 1),
               borderRadius: BorderRadius.circular(20)),
-          child: Center(
-            child: Text(
-              category.categoryName(),
-              style: categoryNameTextStyle,
-            ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              LottieBuilder.asset("assets/animations/${category.categoryId}.json", width: 100, height: 100,),
+              Text(
+                category.categoryName(),
+                style: categoryNameTextStyle,
+              ),
+            ],
           ),
         ),
       ),

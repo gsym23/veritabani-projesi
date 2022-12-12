@@ -40,6 +40,7 @@ dependencies:
   flutter_riverpod: ^2.1.1
   flutter_easyloading: ^3.0.5
   flutter_staggered_animations: ^1.1.1
+  lottie: ^2.0.0
   
   
 
@@ -70,6 +71,7 @@ flutter:
     - assets/images/
     - assets/fonts/
     - assets/json/interestingInformation.json
+    - assets/animations/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:lottie/lottie.dart';
 
 import '../const/home_page_constant.dart';
 import '../const/information_page_constant.dart';
@@ -31,12 +33,41 @@ class InformationPage extends StatelessWidget {
       return SizedBox(
         width: constraints.maxWidth,
         height: constraints.maxHeight,
-        child: Center(
-            child: Text(
-          information,
-          style: interestedInformation,
-          textAlign: TextAlign.center,
-        )),
+        child: AnimationConfiguration.synchronized(
+          duration: const Duration(seconds: 1),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              LottieBuilder.asset(
+                "assets/animations/robot.json",
+                width: 200,
+                height: 200,
+              ),
+              ScaleAnimation(
+                child: FadeInAnimation(
+                  child: Container(
+                    width: constraints.maxWidth / 1.5,
+                    height: constraints.maxHeight / 3,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        gradient: const LinearGradient(
+                            colors: [Colors.black, Colors.blue],
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter),
+                        border: Border.all(color: Colors.white)),
+                    child: Center(
+                      child: Text(
+                        information,
+                        style: interestedInformation,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       );
     });
   }
